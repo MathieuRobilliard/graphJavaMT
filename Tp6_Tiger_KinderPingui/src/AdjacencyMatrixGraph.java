@@ -5,45 +5,66 @@ import graph.UndirectedEdge;
 import graph.Vertex;
 import graph.DirectedEdge;
 
+/**
+ * Implementation of Graph interface with an adjacency matrix
+ * @author Gauchoux, Robilliard
+ */
 public class AdjacencyMatrixGraph implements Graph {
 
-	protected Edge[] edges;	// array which contains the edges of the graph.
-	protected int edgesCounter;	// To know how many edges there are in the graph
-	
-	protected Vertex[] vertices; // array which contains the vertices of the graph.
-	protected int verticesCounter; // To know how many vertices there are in the graph
-	
-	protected boolean[][] adjacencyMatrix; // array of array 
-	private boolean typeGraph;
-	
+	/**
+	 * Array containing the edges of the graph
+	 */
+	private Edge[] edges;
 	
 	/**
-	 * The constructor of the adjacency matrix.
-	 * @param maxEdges The maximum number of Edges in the graph, must be >= 1.
-	 * @param maxVertices The maximum number of Vertices in the graph, must be >= 2.
-	 * @param typeGraph True if the graph is Directed, False if it is Undirected
+	 * Counter to know the number of edges already saved
 	 */
-	public AdjacencyMatrixGraph(int maxEdges, int maxVertices, boolean typeGraph) {
-		// throws MinimumSizeOfGraphNotRespected
+	private int edgesCounter;
+	
+	/**
+	 * Array containing the vertices of the graph
+	 */
+	private Vertex[] vertices;
+	
+	/**
+	 * Counter to know the number of vertices already saved
+	 */
+	private int verticesCounter;
+	
+	/**
+	 * Array of array to create an adjacency matrix
+	 */
+	private boolean[][] adjacencyMatrix;
+	
+	/**
+	 * Figure out if the graph is directed or not
+	 */
+	private boolean graphIsDirected;
+	
+	/**
+	 * Create a graph with adjacencyMatrix
+	 * @param maxEdges The maximum number of Edges in the graph, must be >= 1
+	 * @param maxVertices The maximum number of Vertices in the graph, must be >= 2
+	 * @param graphIsDirected True if the graph is Directed, False if it is Undirected
+	 */
+	public AdjacencyMatrixGraph(int maxEdges, int maxVertices, boolean graphIsDirected) {
 		if (maxEdges < 1 || maxVertices < 2) {
-			//throw new MinimumSizeOfGraphNotRespected(maxEdges, maxVertices);
-			System.out.println("Il est necessaire d'avoir au moins 1 arête et 2 sommets, alors que vous n'avez autorisez que "
-			+ maxEdges + " arêtes et " + maxVertices + " sommets.");
+			System.out.println("There must be at least 1 edge and 2 vertices allowed, you have just authorized "
+			+ maxEdges + " edges and " + maxVertices + " vertices.");
 		} else {
 			this.edges = new Edge[maxEdges];
 			this.edgesCounter = 0;
 			this.vertices = new Vertex[maxVertices];
 			this.verticesCounter = 0;
 			this.adjacencyMatrix = new boolean[maxVertices][maxVertices];
-			this.typeGraph  = typeGraph;
+			this.graphIsDirected  = graphIsDirected;
 			
 			for (int i = 0; i < maxVertices; i++) {
 				for (int j = 0; j < maxVertices; j++) {
-					this.adjacencyMatrix[i][j] = false;	// All values = 0 at the beginning
+					this.adjacencyMatrix[i][j] = false;
 				}
 			}
 		}
-		
 		
 	}
 	
@@ -59,61 +80,34 @@ public class AdjacencyMatrixGraph implements Graph {
 
 	@Override
 	public void setEdge(Edge edge) {
-		// throws NotUndirectedEdge, MaximumSizeReachedOnEdges
-		
 		if (this.edgesCounter >= this.edges.length) {
-			//throw new MaximumSizeReachedOnEdges();
-			System.out.println("Vous avez atteint le nombre maximum d'arêtes sur ce graphe.");
-			return;
-		}
-		if (vertexExist(edge.getVertexV1()) == false 
-				|| vertexExist(edge.getVertexV2()) == false) {	// If vertex1 or vertex2 don't exist.
-			//throw new MissingVertexInGraph();
+			System.out.println("You have reached the maximum amount of edges in the graph.");
+		} else if (!vertexExist(edge.getVertexV1()) || !vertexExist(edge.getVertexV2())) {
 			System.out.println("One or more of the edge's vertices is not in the graph.");
-			return;
-		}
-		if (edgeExist(edge) == true) {
-			System.out.println("The edge is not in the graph.");
-			return;
-		}
-		
-		
-		if (typeGraph == true) {	// If the graph is directed
-			if (edge.getClass() == UndirectedEdge.class) {
-				//throw new NotUndirectedEdge();
-				System.out.println("Vous essayez d'ajouter une arête qui est dirigée à un graphe qui ne l'est pas.");
-			} else {
-				this.edges[this.edgesCounter] = edge;	// Insert the Edge in the array of Edges
-				this.edgesCounter++;
-				int vertex1Index = vertexPosition(edge.getVertexV1());
-				int vertex2Index = vertexPosition(edge.getVertexV2());
-				this.adjacencyMatrix[vertex2Index][vertex1Index] = true;
-			}
-		} else if (typeGraph == false) {	// If the graph is undirected
-			if (edge.getClass() == DirectedEdge.class) {
-				System.out.println("Vous essayez d'ajouter une arête qui n'est pas dirigée à un graphe qui l'est.");
-			} else {
-				this.edges[this.edgesCounter] = edge;	// Insert the Edge in the array of Edges
-				this.edgesCounter++;
-				int vertex1Index = vertexPosition(edge.getVertexV1());
-				int vertex2Index = vertexPosition(edge.getVertexV2());
+		} else if (edgeExist(edge) == true) {
+			System.out.println("The edge is already in the graph.");
+		} else if (this.graphIsDirected && edge.getClass() == UndirectedEdge.class) {
+			System.out.println("You try to add an undirected edge to a directed graph.");
+		} else if (!this.graphIsDirected && edge.getClass() == DirectedEdge.class) {
+			System.out.println("You try to add a directed edge to an undirected graph.");
+		} else {
+			this.edges[this.edgesCounter] = edge;
+			this.edgesCounter++;
+			int vertex1Index = vertexPosition(edge.getVertexV1());
+			int vertex2Index = vertexPosition(edge.getVertexV2());
+			this.adjacencyMatrix[vertex2Index][vertex1Index] = true;
+			if (!this.graphIsDirected) {
 				this.adjacencyMatrix[vertex1Index][vertex2Index] = true;
-				this.adjacencyMatrix[vertex2Index][vertex1Index] = true;
 			}
 		}
 	}
 
 	@Override
 	public void setVertex(Vertex vertex) {
-		//throws MaximumSizeReachedOnVertices {
-	
 		if (this.verticesCounter >= this.vertices.length) {
-			//throw new MaximumSizeReachedOnVertices();
-			System.out.println("Vous avez atteint le nombre maximum de sommets sur ce graphe.");
-			return;
-		} else if (vertexExist(vertex) == true) {
-			System.out.println("The vertex is not in the graph.");
-			return;
+			System.out.println("You have reached the maximum amount of vertices in the graph.");
+		} else if (vertexExist(vertex)) {
+			System.out.println("The vertex is already in the graph.");
 		} else {
 			this.vertices[this.verticesCounter] = vertex;	
 			this.verticesCounter++;
@@ -122,7 +116,7 @@ public class AdjacencyMatrixGraph implements Graph {
 	}
 	
 	/**
-	 * Check if the vertex is in the array of vertices of the graph.
+	 * Check if the vertex exist in the graph
 	 * @param vertex The vertex to check.
 	 * @return True if the vertex is in the graph, False else.
 	 */
@@ -136,9 +130,9 @@ public class AdjacencyMatrixGraph implements Graph {
 	}
 	
 	/**
-	 * To know the index of a vertex in the array of vertex named vertices
-	 * @param vertex The vertex to get the index.
-	 * @return Return the index of the vertex in vertices or return -1 if the vertex not exists.
+	 * Find the position of a vertex in the array structure (vertices)
+	 * @param vertex The vertex to get the position.
+	 * @return Return the position of the vertex in vertices or return -1 if the vertex not exists.
 	 */
 	private int vertexPosition(Vertex vertex) {
 		for (int i = 0; i < this.verticesCounter; i++) {
@@ -150,7 +144,7 @@ public class AdjacencyMatrixGraph implements Graph {
 	}
 	
 	/**
-	 * Check if the edge is in the array of edges of the graph.
+	 * Check if the edge is in the array of edges in the graph.
 	 * @param edge The edge to check.
 	 * @return True if the edge is in the graph, False else.
 	 */
