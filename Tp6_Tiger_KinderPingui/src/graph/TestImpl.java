@@ -6,7 +6,7 @@ import graph.UndirectedEdge;
 import graph.Vertex;
 import graph.DirectedEdge;
 
-public class TestGraph {
+public class TestImpl {
 
 	public static void main(String[] args) {
 		
@@ -55,7 +55,7 @@ public class TestGraph {
 		
 		// Create a matrix about an undirected graph
 		System.out.println("--- Create an undirected graph with max to 6 edges and 6 vertices ---");
-		AdjacencyMatrixGraph undMatrix1 = new AdjacencyMatrixGraph(6, 6, false);
+		ImplGraph undMatrix1 = new ImplGraph(6, 6, false);
 		
 		System.out.println("- Add vertices -");
 		System.out.println("Add vertex A to graph");
@@ -107,7 +107,7 @@ public class TestGraph {
 		
 		// Create a matrix about a directed graph
 		System.out.println("--- Create a directed graph with max to 10 edges and 10 vertices ---");
-		AdjacencyMatrixGraph dirMatrix1 = new AdjacencyMatrixGraph(10, 10, true);
+		ImplGraph dirMatrix1 = new ImplGraph(10, 10, true);
 				
 		System.out.println("Add vertex A to graph");
 		dirMatrix1.setVertex(vertexA);
@@ -157,7 +157,7 @@ public class TestGraph {
 		
 		// Try to create a matrix impossible to create
 		System.out.println("--- Create a bad matrix with max to 0 edge and 1 vertex (error) ---");
-		AdjacencyMatrixGraph undMatrix2 = new AdjacencyMatrixGraph(0, 1, false);	// OK
+		ImplGraph undMatrix2 = new ImplGraph(0, 1, false);	// OK
 		System.out.println("	| Can't create the matrix ! (good)");
 		
 		System.out.println("### End ###");

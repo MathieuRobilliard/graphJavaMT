@@ -10,7 +10,7 @@ import graph.DirectedEdge;
  * Implementation of Graph interface with an adjacency matrix
  * @author Gauchoux, Robilliard
  */
-public class AdjacencyMatrixGraph implements Graph {
+public class ImplGraph implements Graph {
 
 	/**
 	 * Array containing the edges of the graph
@@ -48,7 +48,7 @@ public class AdjacencyMatrixGraph implements Graph {
 	 * @param maxVertices The maximum number of Vertices in the graph, must be >= 2
 	 * @param graphIsDirected True if the graph is Directed, False if it is Undirected
 	 */
-	public AdjacencyMatrixGraph(int maxEdges, int maxVertices, boolean graphIsDirected) {
+	public ImplGraph(int maxEdges, int maxVertices, boolean graphIsDirected) {
 		if (maxEdges < 1 || maxVertices < 2) {
 			System.out.println("There must be at least 1 edge and 2 vertices allowed, you have just authorized "
 			+ maxEdges + " edges and " + maxVertices + " vertices.");
