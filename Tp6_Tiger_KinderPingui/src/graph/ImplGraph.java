@@ -85,7 +85,7 @@ public class ImplGraph implements Graph {
 			System.out.println("You have reached the maximum amount of edges in the graph.");
 		} else if (!vertexExist(edge.getVertexV1()) || !vertexExist(edge.getVertexV2())) {
 			System.out.println("One or more of the edge's vertices is not in the graph.");
-		} else if (edgeExist(edge) == true) {
+		} else if (edgeExist(edge)) {
 			System.out.println("The edge is already in the graph.");
 		} else if (this.graphIsDirected && edge.getClass() == UndirectedEdge.class) {
 			System.out.println("You try to add an undirected edge to a directed graph.");
