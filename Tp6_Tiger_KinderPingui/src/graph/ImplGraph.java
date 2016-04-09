@@ -113,7 +113,33 @@ public class ImplGraph implements Graph {
 			this.vertices[this.verticesCounter] = vertex;	
 			this.verticesCounter++;
 		}
-		
+	}
+	
+	@Override
+	public void printNeighbours(Vertex vertex) {
+		// We think as a "neighbour" a vertex connected to the vertex in param (but not the same) by all kinds of edge
+		if (!vertexExist(vertex)) {
+			System.out.println("The vertex not exists in the graph.");
+		} else {
+			int position = vertexPosition(vertex);
+			System.out.println("Neighbourgs of " + vertex.getName() + " :");
+			
+			// Print all vertices with "true" in the adjacencyMatrix[position] array, but not when it's the same vertex
+			for (int i = 0; i < this.adjacencyMatrix[position].length; i++) {
+				if (i != position && this.adjacencyMatrix[position][i]) {
+					System.out.println(this.vertices[i].getName());
+				}
+			}
+			
+			// If graph is directed, print also all vertices with "true" in the adjacencyMatrix[i][position] array, but not when it's the same vertex
+			if (this.graphIsDirected) { 
+				for (int i = 0; i < this.adjacencyMatrix[position].length; i++) {
+					if (i != position && this.adjacencyMatrix[i][position]) {
+						System.out.println(this.vertices[i].getName());
+					}
+				}
+			} 
+		}
 	}
 	
 	/**

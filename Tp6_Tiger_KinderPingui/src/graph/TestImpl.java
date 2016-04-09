@@ -1,7 +1,6 @@
 package graph;
 
 import graph.Edge;
-import graph.Graph;
 import graph.UndirectedEdge;
 import graph.Vertex;
 import graph.DirectedEdge;
@@ -53,11 +52,13 @@ public class TestImpl {
 		Edge diEdge3 = new DirectedEdge(vertexD, vertexA);
 		System.out.println("	| D->A successfully created !");
 		
+		
+		
 		// Create a matrix about an undirected graph
 		System.out.println("--- Create an undirected graph with max to 6 edges and 6 vertices ---");
 		ImplGraph undMatrix1 = new ImplGraph(6, 6, false);
 		
-		System.out.println("- Add vertices -");
+		System.out.println("# TEST : Add vertices");
 		System.out.println("Add vertex A to graph");
 		undMatrix1.setVertex(vertexA);
 		System.out.println("	| A successfully added !");
@@ -80,7 +81,7 @@ public class TestImpl {
 		undMatrix1.setVertex(vertexA);	// test to out of range the array of vertices -- OK
 		System.out.println("	| A not added ! (good)");
 		
-		System.out.println("- Add edges -");
+		System.out.println("# TEST : Add edges");
 		System.out.println("Add edge A-B to graph");
 		undMatrix1.setEdge(unEdge1);
 		System.out.println("	| A-B successfully added !");
@@ -97,18 +98,29 @@ public class TestImpl {
 		undMatrix1.setEdge(diEdge1);	// test about directed Edge in undirected graph -- OK
 		System.out.println("	| A->C not added ! (good)");
 		
-		System.out.println("- Get all vertices -");
+		System.out.println("# TEST : Get all vertices");
 		undMatrix1.getVertexs();
 		System.out.println("	| Getter works !");
 		
-		System.out.println("- Get all edges -");
+		System.out.println("# TEST : Get all edges");
 		undMatrix1.getEdges();
 		System.out.println("	| Getter works !");
+		
+		System.out.println("# TEST : Display all neighbourgs in undirected graph");
+		undMatrix1.printNeighbours(vertexA);
+		undMatrix1.printNeighbours(vertexB);
+		undMatrix1.printNeighbours(vertexC);
+		undMatrix1.printNeighbours(vertexD);
+		undMatrix1.printNeighbours(vertexE);
+		System.out.println("	| Print works !");
+		
+		
 		
 		// Create a matrix about a directed graph
 		System.out.println("--- Create a directed graph with max to 10 edges and 10 vertices ---");
 		ImplGraph dirMatrix1 = new ImplGraph(10, 10, true);
-				
+		
+		System.out.println("# TEST : Add vertices");
 		System.out.println("Add vertex A to graph");
 		dirMatrix1.setVertex(vertexA);
 		System.out.println("	| A successfully added !");
@@ -131,6 +143,7 @@ public class TestImpl {
 		dirMatrix1.setVertex(vertexA);	// test to out of range the array of vertices -- OK
 		System.out.println("	| A not added ! (good)");
 		
+		System.out.println("# TEST : Add edges");
 		System.out.println("Add edge A->C to graph");
 		dirMatrix1.setEdge(diEdge1); 
 		System.out.println("	| A->C successfully added !");
@@ -147,13 +160,23 @@ public class TestImpl {
 		dirMatrix1.setEdge(unEdge1);	// test about undirected Edge in directed graph -- OK
 		System.out.println("	| A->C not added ! (good)");
 		
-		System.out.println("- Get all vertices -");
-		undMatrix1.getVertexs();
+		System.out.println("# TEST : Get all vertices");
+		dirMatrix1.getVertexs();
 		System.out.println("	| Getter works !");
 		
-		System.out.println("- Get all edges -");
-		undMatrix1.getEdges();
+		System.out.println("# TEST : Get all edges");
+		dirMatrix1.getEdges();
 		System.out.println("	| Getter works !");
+		
+		System.out.println("# TEST : Display all neighbourgs in directed graph");
+		dirMatrix1.printNeighbours(vertexA);
+		dirMatrix1.printNeighbours(vertexB);
+		dirMatrix1.printNeighbours(vertexC);
+		dirMatrix1.printNeighbours(vertexD);
+		dirMatrix1.printNeighbours(vertexE);
+		System.out.println("	| Print works !");
+		
+		
 		
 		// Try to create a matrix impossible to create
 		System.out.println("--- Create a bad matrix with max to 0 edge and 1 vertex (error) ---");
